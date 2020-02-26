@@ -1,13 +1,13 @@
 var express = require('express');
  
 var hostname = 'localhost';
-var port = 8080;
+var port = 9050;
  
 var app = express();
 
 var Router = express.Router();
 
-Router.route('/piscines').get(function(req,res){ 
+Router.route('/').get(function(req,res){ 
 	res.json({message : "Test", methode : req.method});
 })
 
