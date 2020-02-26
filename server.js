@@ -1,17 +1,18 @@
 'use strict';
 
-var express = require('express');
- 
+const express = require('express');
+const bodyParser = require('body-parser');
+
 const HOST = '0.0.0.0';
 const PORT = 8080;
  
 var app = express();
-
 var Router = express.Router();
 
-Router.route('/').get(function(req,res){ 
-	res.json({message : "Test", methode : req.method});
-})
+app.use(bodyParser.urlencoded({ extended: true }));
+Router.route('/').post(function(req, res){
+	res.json({params: req.body});
+});
 
 app.use(Router);
 
