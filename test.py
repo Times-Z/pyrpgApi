@@ -1,28 +1,33 @@
 import requests
 
 # r = requests.get("http://localhost:49160")
+# data = {
+#     "charName": "Administratueur",
+#     "charClassId": 4,
+#     "charClass": {
+#         "name": "Admin",
+#         "hp": 2000000,
+#         "atk": 100000,
+#         "def": 200,
+#         "acr": 100,
+#         "spe": {
+#             "name": "God mod",
+#             "target": "self",
+#             "effect": {
+#                 "focus": "hp",
+#                 "alterate": "+",
+#                 "value": "99999999999999999999"
+#             }
+#         }
+#     },
+#     "charLevel": 1,
+#     "charExp": False,
+#     "score": 0
+# }
 data = {
-    "charName": "Administratueur",
-    "charClassId": 4,
-    "charClass": {
-        "name": "Admin",
-        "hp": 2000000,
-        "atk": 100000,
-        "def": 200,
-        "acr": 100,
-        "spe": {
-            "name": "God mod",
-            "target": "self",
-            "effect": {
-                "focus": "hp",
-                "alterate": "+",
-                "value": "99999999999999999999"
-            }
-        }
-    },
-    "charLevel": 1,
-    "charExp": False,
-    "score": 0
+    "Title": "Title",
+    "Type": "Book",
+    "Number": 6
 }
 r = requests.post("http://localhost:49160", data = data)
 # r.text          #Retourne le contenu en unicode
