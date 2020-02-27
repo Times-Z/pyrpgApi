@@ -7,7 +7,7 @@
 
     # Copie sources VueJs
     WORKDIR /build
-    COPY ./package*.json /build
+    COPY ./package*.json /build/
 
     # Téléchargement des dépendences
     RUN npm install
