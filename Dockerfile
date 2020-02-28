@@ -27,6 +27,11 @@
     # Copie des Dépendences
     COPY --from=builder-node /build /app
 
+    # Copying app
+    COPY ./server.js /app/server.js
+    COPY ./logs /app/logs
+    COPY ./db /app/db
+
     # Config du container
     WORKDIR /app
     CMD ["npm", "start"]
