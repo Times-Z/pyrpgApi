@@ -1,30 +1,35 @@
 import requests
 import json
 
+# data = {
+#     "charName": "Administratueur",
+#     "charClassId": 4,
+#     "charClass": {
+#         "name": "Admin",
+#         "hp": 2000000,
+#         "atk": 100000,
+#         "def": 200,
+#         "acr": 100,
+#         "spe": {
+#             "name": "God mod",
+#             "target": "self",
+#             "effect": {
+#                 "focus": "hp",
+#                 "alterate": "+",
+#                 "value": "99999999999999999999"
+#             }
+#         }
+#     },
+#     "charLevel": 1,
+#     "charExp": False,
+#     "score": 0
+# }
 data = {
-    "charName": "Administratueur",
-    "charClassId": 4,
-    "charClass": {
-        "name": "Admin",
-        "hp": 2000000,
-        "atk": 100000,
-        "def": 200,
-        "acr": 100,
-        "spe": {
-            "name": "God mod",
-            "target": "self",
-            "effect": {
-                "focus": "hp",
-                "alterate": "+",
-                "value": "99999999999999999999"
-            }
-        }
-    },
-    "charLevel": 1,
-    "charExp": False,
-    "score": 0
+    "username": "testuser",
+    "password": "123456"
 }
-r = requests.post("http://0.0.0.0:8080/save", data = data)
+
+r = requests.post("http://0.0.0.0:9080/login", data = data)
 # r.text          #Retourne le contenu en unicode
 # r.content       #Retourne le contenu en bytes
 # r.json          #Retourne le contenu sous forme json
