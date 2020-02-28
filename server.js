@@ -13,7 +13,7 @@ sq.verbose();
 //     "password": "123456"
 // }
 
-var db = new sq.Database(__dirname + '/users.db3');
+var db = new sq.Database(__dirname + '/db/users.db3');
 var app = express();
 var Router = express.Router();
 
