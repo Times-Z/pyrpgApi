@@ -1,27 +1,28 @@
 {
-    "name": "pyrpg-api",
-    "version": "1.0.0",
-    "description": "Api of pyrpg project",
-    "main": "server.js",
-    "scripts": {
-        "start": "node server.js"
-    },
-    "dependencies": {
-        "argon2": "^0.26.0",
-        "body-parser": "^1.19.0",
-        "express": "^4.17.1",
-        "sqlite3": "^4.1.1"
-    },
-    "engines": {
-        "node": "13.8.0"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Crash-Zeus/pyrpg"
-    },
-    "author": "Crash-Zeus",
-    "contributors": [
-        "GGracieux (https://github.com/GGracieux)"
-    ],
-    "license": "MIT"
+  "name": "pyrpg-api",
+  "version": "1.0.0",
+  "description": "Api of pyrpg project",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "argon2": "^0.26.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "log-to-file": "^2.0.2",
+    "sqlite3": "^4.1.1"
+  },
+  "engines": {
+    "node": "13.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Crash-Zeus/pyrpg"
+  },
+  "author": "Crash-Zeus",
+  "contributors": [
+    "GGracieux (https://github.com/GGracieux)"
+  ],
+  "license": "MIT"
 }
