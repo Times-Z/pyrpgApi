@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const HOST = '0.0.0.0';
-const PORT = 8080;
+const PORT = 9080;
+const log = require('log-to-file');
 const argon2 = require('argon2');
 const sq = require('sqlite3');
 sq.verbose();
@@ -29,14 +30,13 @@ Router.route('/login').post(function (req, res) {
 					res.json({
 						"DB user" : user,
 					});
-					console.log(res.statusCode);
 				} else {
 					res.sendStatus(401);
-					console.log(res.statusCode);
+					log('IP : ' + req.ip + ' Return code : ' + res.statusCode + ' On url ' + req.url + ' with method ' + req.method, 'logs/server.log');
 				}
 			} else {
 				res.sendStatus(401);
-				console.log(err);
+				log('IP : ' +req.ip+ ' Return code : ' + res.statusCode, 'logs/server.log');
 			}
 	});
 });
