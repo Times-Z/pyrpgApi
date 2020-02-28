@@ -2,8 +2,8 @@
 # STAGE 1 : NPM 
 # ----------------------
 
-    # Image intermédiaire pour les dependences
-    FROM node:13.7.0-alpine as builder-node
+    # Image intermédiaire pour les dependences (need python)
+    FROM node:13.7.0-slim as builder-node
 
     # Copie sources VueJs
     WORKDIR /build
