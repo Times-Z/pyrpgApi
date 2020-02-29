@@ -34,6 +34,7 @@
     COPY ./server.js /app/server.js
     COPY ./logs /app/logs
     COPY ./db /app/db
+    COPY ./functions /app/functions
 
     # Config du container
     WORKDIR /app
