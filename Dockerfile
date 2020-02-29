@@ -20,6 +20,9 @@
     # Image de départ
     FROM node:13.7.0-alpine
 
+    # Add sqlite package to show sqlite file from docker container
+    RUN apk update && apk add sqlite
+
     # Documentation 
     LABEL maintainer="https://github.com/Crash-Zeus"
     EXPOSE 8080
