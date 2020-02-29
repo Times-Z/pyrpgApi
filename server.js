@@ -14,6 +14,21 @@ var Router = express.Router();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.set('views', __dirname + '/html');
+app.engine('html', require('ejs').renderFile);
+
+Router.route('/').get(function(req,res) {
+	res.render('index.html', {
+		"page" : "home",
+	});
+});
+
+Router.route('/doc').get(function(req,res) {
+	res.render('doc.html', {
+		"page" : "doc",
+	});
+});
+
 Router.route('/signup').post(function (req, res) {
 	var username = req.body.username;
 	var email = req.body.email;
