@@ -1,3 +1,4 @@
+const f = require('./functions/functions');
 const express = require('express');
 const bodyParser = require('body-parser');
 const HOST = '0.0.0.0';
@@ -67,8 +68,9 @@ Router.route('/login').post(function (req, res) {
 				res.json({
 					"code": res.statusCode,
 					"message": req.statusMessage,
-					"data": user,
+					"data": user
 				});
+			f.updateTimeLog(db, user.user_id);
 			} else {
 				res.status(401).json({
 					"code": res.statusCode,
