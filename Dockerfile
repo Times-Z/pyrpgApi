@@ -35,7 +35,7 @@
     COPY ./logs /app/logs
     COPY ./db /app/db
     COPY ./functions /app/functions
-    COPY ./html /app/html
+    COPY ./public /app/public
 
     # Config du container
     WORKDIR /app
