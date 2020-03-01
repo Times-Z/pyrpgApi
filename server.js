@@ -14,8 +14,9 @@ var Router = express.Router();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.set('views', __dirname + '/html');
+app.set('views', __dirname + '/public');
 app.engine('html', require('ejs').renderFile);
+app.use('/public', express.static('public'));
 
 Router.route('/').get(function(req,res) {
 	res.render('index.html', {
