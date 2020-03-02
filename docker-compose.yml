@@ -1,0 +1,19 @@
+version: '3'
+services:
+  api:
+    container_name: api
+    build: .
+    ports:
+      - "9080:8080"
+    volumes:
+        - ./db:/app/db
+    networks:
+        local_api:
+            ipv4_address: 172.18.1.1
+
+networks:
+    local_api:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.18.0.0/16
