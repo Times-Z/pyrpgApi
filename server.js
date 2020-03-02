@@ -30,6 +30,13 @@ Router.route('/doc').get(function(req,res) {
 	});
 });
 
+Router.route('/ping').post(function (req,res) {
+	res.json({
+		"code": res.statusCode,
+		"message": req.statusMessage
+	});
+});
+
 Router.route('/signup').post(function (req, res) {
 	var username = req.body.username;
 	var email = req.body.email;
@@ -117,4 +124,4 @@ Router.route('/save').post(function (req, res) {
 app.use(Router);
 
 app.listen(PORT, HOST);
-console.log(`Running on http://${HOST}:${PORT}`);
+console.log(`Running on http://172.18.1.1:8080`);
