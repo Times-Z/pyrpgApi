@@ -11,7 +11,7 @@ Link of pyrpg project : https://github.com/Crash-Zeus/pyrpg
 ## How to start api
 
 ```bash
-     docker-compose up --build
+     docker-compose up
 ```
 
 image avalaible too :
