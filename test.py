@@ -25,14 +25,13 @@ import json
 #     "score": 0
 # }
 data = {
-    "username": "testuser",
+    "email": "test@test.test",
     "password": "123456"
 }
 
-r = requests.post("http://0.0.0.0:9080/login", data = data)
-# r.text          #Retourne le contenu en unicode
-# r.content       #Retourne le contenu en bytes
-# r.json          #Retourne le contenu sous forme json
-# r.headers       #Retourne le headers sous forme de dictionnaire 
-# r.status_code   #Retourne le status code
-print(json.dumps(json.loads(r.text), indent=4))
+r = requests.post("http://172.18.1.1:8080/login", data = data)
+if r.status_code == 200:
+    print(json.dumps(json.loads(r.text), indent=4))
+else:
+    print('Error')
+    print(r.status_code)
