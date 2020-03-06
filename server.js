@@ -6,10 +6,11 @@ const PORT = 8080;
 const log = require('log-to-file');
 const argon2 = require('argon2');
 const sq = require('sqlite3').verbose();
+const jwt = require('jsonwebtoken');
+const KEY = require('./functions/key');
 
 var db = new sq.Database(__dirname + '/db/users.db3');
 var app = express();
-var Router = express.Router();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -18,26 +19,26 @@ app.set('views', __dirname + '/public');
 app.engine('html', require('ejs').renderFile);
 app.use('/public', express.static('public'));
 
-Router.route('/').get(function(req,res) {
+app.get('/', (req, res) => {
 	res.render('index.html', {
-		"page" : "home",
+		"page": "home",
 	});
 });
 
-Router.route('/doc').get(function(req,res) {
+app.get('/doc', (req, res) => {
 	res.render('doc.html', {
-		"page" : "doc",
+		"page": "doc",
 	});
 });
 
-Router.route('/ping').post(function (req,res) {
+app.post('/ping', (req, res) => {
 	res.json({
 		"code": res.statusCode,
 		"message": req.statusMessage
 	});
 });
 
-Router.route('/signup').post(function (req, res) {
+app.post('/signup', (req, res) => {
 	var username = req.body.username;
 	var email = req.body.email;
 	var rawpass = req.body.password;
@@ -71,9 +72,9 @@ Router.route('/signup').post(function (req, res) {
 	});
 });
 
-Router.route('/login').post(function (req, res) {
-	var email = req.body.email;
-	var password = req.body.password;
+app.post('/login', (req, res) => {
+	var email = req.body.email.toString();
+	var password = req.body.password.toString();
 
 	if (!email || !password) {
 		res.status(422).json({
@@ -88,12 +89,13 @@ Router.route('/login').post(function (req, res) {
 		if (user != null) {
 			if (await argon2.verify(user.user_pass, password)) {
 				var user = user;
+				var token = jwt.sign({ "user": user }, KEY.getKey());
 				res.json({
 					"code": res.statusCode,
 					"message": req.statusMessage,
-					"data": user
+					"data": token
 				});
-			f.updateTimeLog(db, user.user_id);
+				f.updateTimeLog(db, user.user_id);
 			} else {
 				res.status(401).json({
 					"code": res.statusCode,
@@ -111,17 +113,22 @@ Router.route('/login').post(function (req, res) {
 	});
 });
 
-Router.route('/save').post(function (req, res) {
-	res.json({
-		method: req.method,
-		"POST params": req.body,
-		ip: req.ip,
-		code: res.statusCode,
-		message: req.statusMessage
+app.post('/save', f.validateToken, (req, res) => {
+	jwt.verify(req.token, KEY.getKey(), (err, authData) => {
+		if (err) {
+			res.status(403).json({
+				"code": res.statusCode,
+				"message": "Error append"
+			});
+		} else {
+			res.json({
+				code: res.statusCode,
+				ip: req.ip,
+				authData,
+				message: req.statusMessage
+			});
+		}
 	});
 });
 
-app.use(Router);
-
-app.listen(PORT, HOST);
-console.log(`Running on http://172.18.1.1:8080`);
+app.listen(PORT, HOST, () => console.log('Running on http://172.18.1.1:8080'));
