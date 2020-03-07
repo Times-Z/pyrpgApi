@@ -2,6 +2,10 @@ function updateTimeLog(db, uid) {
     db.exec("UPDATE users SET user_last_log = datetime('now') WHERE user_id = " + uid);
 };
 
+function updateLastLogIp(db, uid, ip) {
+    db.exec("UPDATE users SET user_last_ip = '"+ ip +"' WHERE user_id = " + uid);
+};
+
 function validateToken(req, res, next) {
     const bearerHeader = req.headers['authorization'];
     if (typeof bearerHeader !== 'undefined') {
@@ -20,5 +24,6 @@ function validateToken(req, res, next) {
 
 module.exports = {
     updateTimeLog : updateTimeLog,
-    validateToken : validateToken
+    validateToken : validateToken,
+    updateLastLogIp : updateLastLogIp
 };
