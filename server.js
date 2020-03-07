@@ -55,7 +55,7 @@ app.post('/signup', (req, res) => {
 	db.get("SELECT user_id FROM users WHERE user_mail = '" + email + "'", async function (err, user) {
 		if (user == null) {
 			var pass = await argon2.hash(rawpass);
-			db.exec("INSERT INTO users (user_name, user_pass, user_mail) VALUES ('" + username + "','" + pass + "','" + email + "')");
+			db.exec("INSERT INTO users (user_name, user_pass, user_mail, user_signin_ip, user_last_ip) VALUES ('" + username + "','" + pass + "','" + email + "', '" + req.ip + "', '" + req.ip + "')");
 			res.json({
 				"code": res.statusCode,
 				"message": req.statusMessage
@@ -96,6 +96,7 @@ app.post('/login', (req, res) => {
 					"data": token
 				});
 				f.updateTimeLog(db, user.user_id);
+				f.updateLastLogIp(db, user.user_id, req.ip)
 			} else {
 				res.status(401).json({
 					"code": res.statusCode,
