@@ -9,7 +9,7 @@ const sq = require('sqlite3').verbose();
 const jwt = require('jsonwebtoken');
 const KEY = require('./functions/key');
 
-var db = new sq.Database(__dirname + '/db/users.db3');
+var db = new sq.Database(__dirname + '/db/api.db3');
 var app = express();
 
 app.use(bodyParser.json());
@@ -114,7 +114,7 @@ app.post('/login', (req, res) => {
 	});
 });
 
-app.post('/save', f.validateToken, (req, res) => {
+app.post('/getSave', f.validateToken, (req, res) => {
 	jwt.verify(req.token, KEY.getKey(), (err, authData) => {
 		if (err) {
 			res.status(403).json({
@@ -122,12 +122,16 @@ app.post('/save', f.validateToken, (req, res) => {
 				"message": "Error append"
 			});
 		} else {
-			res.json({
-				code: res.statusCode,
-				ip: req.ip,
-				authData,
-				message: req.statusMessage
-			});
+			db.get("SELECT * FROM saves WHERE user_id = '" + authData['user']['user_id'] + "'", (err, save) => {
+				if (typeof save == 'undefined') {
+					save = null;
+				};
+				res.json({
+					code: res.statusCode,
+					message: req.statusMessage,
+					save
+				});
+			})
 		}
 	});
 });
