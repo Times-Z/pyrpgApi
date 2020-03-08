@@ -136,4 +136,61 @@ app.post('/getSave', f.validateToken, (req, res) => {
 	});
 });
 
+app.post('/delSave', f.validateToken, (req,res) => {
+	jwt.verify(req.token, KEY.getKey(), (err,authData) => {
+		if (err) {
+			res.status(403).json({
+				"code": res.statusCode,
+				"message": "Error append"
+			});
+		} else {
+			console.log(authData);
+			db.exec("DELETE FROM saves WHERE user_id = '" + authData['user']['user_id'] + "'", (err) => {
+				res.json({
+					code: res.statusCode,
+					message: err
+				});
+			});
+		}
+	});
+});
+
+app.post('/save', f.validateToken, (req, res) => {
+	var data = req.body.save.toString();
+
+	if (!data) {
+		res.status(422).json({
+			"code": res.statusCode,
+			"message": "Missing argument"
+		});
+		log('IP : ' + req.ip + ' - return code : ' + res.statusCode + ' - on url ' + req.url + ' - with method ' + req.method, 'logs/server.log');
+		return;
+	};
+
+	jwt.verify(req.token, KEY.getKey(), (err, authData) => {
+		if (err) {
+			res.status(403).json({
+				"code": res.statusCode,
+				"message": "Error append"
+			});
+		} else {
+			db.exec("INSERT INTO saves (user_id, save_json) VALUES ('"+ authData['user']['user_id'] +"', '" + data + "')", (err) => {
+				if (err) {
+					res.status(500).json({
+						"code": res.statusCode,
+						"message": err
+					});
+					log('IP : ' + req.ip + ' - return code : ' + res.statusCode + ' - on url ' + req.url + ' - with method ' + req.method, 'logs/server.log');
+					return;
+				} else {
+					res.json({
+						"code" : res.statusCode,
+						"message": req.statusMessage
+					});
+				}
+			});
+		}
+	});
+});
+
 app.listen(PORT, HOST, () => console.log('Running on http://172.18.1.1:8080'));
