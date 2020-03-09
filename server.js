@@ -123,14 +123,21 @@ app.post('/getSave', f.validateToken, (req, res) => {
 			});
 		} else {
 			db.get("SELECT * FROM saves WHERE user_id = ?", [authData['user']['user_id']], (err, save) => {
-				if (typeof save == 'undefined') {
-					save = null;
-				};
-				res.json({
-					code: res.statusCode,
-					message: req.statusMessage,
-					save
-				});
+				if (err) {
+					res.status(500).json({
+						"code": res.statusCode,
+						"message": err
+					});
+				} else {
+					if (typeof save == 'undefined') {
+						save = null;
+					};
+					res.json({
+						code: res.statusCode,
+						message: req.statusMessage,
+						save
+					});
+				}
 			})
 		}
 	});
@@ -188,6 +195,23 @@ app.post('/save', f.validateToken, (req, res) => {
 						"message": req.statusMessage
 					});
 				}
+			});
+		}
+	});
+});
+
+app.get('/classes', (req, res) => {
+	db.all("SELECT * FROM classes", (err, classes) => {
+		if (err) {
+			res.status(500).json({
+				"code": res.statusCode,
+				"message": err
+			});
+		} else {
+			res.json({
+				"code" : res.statusCode,
+				"message": req.statusMessage,
+				classes
 			});
 		}
 	});
