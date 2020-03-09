@@ -52,10 +52,10 @@ app.post('/signup', (req, res) => {
 		return;
 	};
 
-	db.get("SELECT user_id FROM users WHERE user_mail = '" + email + "'", async function (err, user) {
+	db.get("SELECT user_id FROM users WHERE user_mail = ?", [email], async function (err, user) {
 		if (user == null) {
 			var pass = await argon2.hash(rawpass);
-			db.exec("INSERT INTO users (user_name, user_pass, user_mail, user_signin_ip, user_last_ip) VALUES ('" + username + "','" + pass + "','" + email + "', '" + req.ip + "', '" + req.ip + "')");
+			db.run("INSERT INTO users (user_name, user_pass, user_mail, user_signin_ip, user_last_ip) VALUES (?, ?, ?, ?, ?)", [username, password, email, req.ip, req.ip]);
 			res.json({
 				"code": res.statusCode,
 				"message": req.statusMessage
@@ -85,7 +85,7 @@ app.post('/login', (req, res) => {
 		return
 	};
 
-	db.get("SELECT * FROM users WHERE user_mail='" + email + "'", async function (err, user) {
+	db.get("SELECT * FROM users WHERE user_mail= ?", [email], async function (err, user) {
 		if (user != null) {
 			if (await argon2.verify(user.user_pass, password)) {
 				var user = user;
@@ -122,7 +122,7 @@ app.post('/getSave', f.validateToken, (req, res) => {
 				"message": "Error append"
 			});
 		} else {
-			db.get("SELECT * FROM saves WHERE user_id = '" + authData['user']['user_id'] + "'", (err, save) => {
+			db.get("SELECT * FROM saves WHERE user_id = ?", [authData['user']['user_id']], (err, save) => {
 				if (typeof save == 'undefined') {
 					save = null;
 				};
@@ -145,7 +145,7 @@ app.post('/delSave', f.validateToken, (req,res) => {
 			});
 		} else {
 			console.log(authData);
-			db.exec("DELETE FROM saves WHERE user_id = '" + authData['user']['user_id'] + "'", (err) => {
+			db.run("DELETE FROM saves WHERE user_id = ?", [authData['user']['user_id']],(err) => {
 				res.json({
 					code: res.statusCode,
 					message: err
@@ -174,7 +174,7 @@ app.post('/save', f.validateToken, (req, res) => {
 				"message": "Error append"
 			});
 		} else {
-			db.exec("INSERT INTO saves (user_id, save_json) VALUES ('"+ authData['user']['user_id'] +"', '" + data + "')", (err) => {
+			db.run("INSERT INTO saves (user_id, save_json) VALUES (?,?)", [authData['user']['user_id'], data], (err) => {
 				if (err) {
 					res.status(500).json({
 						"code": res.statusCode,
