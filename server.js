@@ -234,4 +234,21 @@ app.get('/levels', (req,res) => {
 	});
 });
 
+app.get('/monsters', (req, res) => {
+	db.all("SELECT * FROM monsters", (err, monsters) => {
+		if (err) {
+			res.status(500).json({
+				"code": res.statusCode,
+				"message": err
+			});
+		} else {
+			res.json({
+				"code" : res.statusCode,
+				"message": req.statusMessage,
+				monsters
+			});
+		}
+	});
+});
+
 app.listen(PORT, HOST, () => console.log('Running on http://172.18.1.1:8080'));
