@@ -53,21 +53,28 @@ app.post('/signup', (req, res) => {
 	};
 
 	db.get("SELECT user_id FROM users WHERE user_mail = ?", [email], async function (err, user) {
-		if (user == null) {
-			var pass = await argon2.hash(rawpass);
-			db.run("INSERT INTO users (user_name, user_pass, user_mail, user_signin_ip, user_last_ip) VALUES (?, ?, ?, ?, ?)", [username, pass, email, req.ip, req.ip]);
-			res.json({
+		if (err) {
+			res.status(500).json({
 				"code": res.statusCode,
-				"message": req.statusMessage
+				"message": err
 			});
-			return;
 		} else {
-			res.status(401).json({
-				"code": res.statusCode,
-				"message": "Email as already exist in DB"
-			});
-			log('IP : ' + req.ip + ' - return code : ' + res.statusCode + ' - on url ' + req.url + ' - with method ' + req.method, 'logs/server.log');
-			return;
+			if (user == null) {
+				var pass = await argon2.hash(rawpass);
+				db.run("INSERT INTO users (user_name, user_pass, user_mail, user_signin_ip, user_last_ip) VALUES (?, ?, ?, ?, ?)", [username, pass, email, req.ip, req.ip]);
+				res.json({
+					"code": res.statusCode,
+					"message": req.statusMessage
+				});
+				return;
+			} else {
+				res.status(401).json({
+					"code": res.statusCode,
+					"message": "Email as already exist in DB"
+				});
+				log('IP : ' + req.ip + ' - return code : ' + res.statusCode + ' - on url ' + req.url + ' - with method ' + req.method, 'logs/server.log');
+				return;
+			}
 		}
 	});
 });
