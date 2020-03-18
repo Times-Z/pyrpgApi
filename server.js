@@ -93,30 +93,37 @@ app.post('/login', (req, res) => {
 	};
 
 	db.get("SELECT * FROM users WHERE user_mail= ?", [email], async function (err, user) {
-		if (user != null) {
-			if (await argon2.verify(user.user_pass, password)) {
-				var user = user;
-				var token = jwt.sign({ "user": user }, KEY.getKey());
-				res.json({
-					"code": res.statusCode,
-					"message": req.statusMessage,
-					"data": token
-				});
-				f.updateTimeLog(db, user.user_id);
-				f.updateLastLogIp(db, user.user_id, req.ip)
+		if (err) {
+			res.status(500).json({
+				"code": res.statusCode,
+				"message": err
+			});
+		} else {
+			if (user != null) {
+				if (await argon2.verify(user.user_pass, password)) {
+					var user = user;
+					var token = jwt.sign({ "user": user }, KEY.getKey());
+					res.json({
+						"code": res.statusCode,
+						"message": req.statusMessage,
+						"data": token
+					});
+					f.updateTimeLog(db, user.user_id);
+					f.updateLastLogIp(db, user.user_id, req.ip)
+				} else {
+					res.status(401).json({
+						"code": res.statusCode,
+						"message": "Incorect password"
+					});
+					log('IP : ' + req.ip + ' - return code : ' + res.statusCode + ' - on url ' + req.url + ' - with method ' + req.method, 'logs/server.log');
+				}
 			} else {
 				res.status(401).json({
 					"code": res.statusCode,
-					"message": "Incorect password"
+					"message": "Incorect email"
 				});
 				log('IP : ' + req.ip + ' - return code : ' + res.statusCode + ' - on url ' + req.url + ' - with method ' + req.method, 'logs/server.log');
 			}
-		} else {
-			res.status(401).json({
-				"code": res.statusCode,
-				"message": "Incorect email"
-			});
-			log('IP : ' + req.ip + ' - return code : ' + res.statusCode + ' - on url ' + req.url + ' - with method ' + req.method, 'logs/server.log');
 		}
 	});
 });
