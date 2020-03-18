@@ -55,7 +55,7 @@ app.post('/signup', (req, res) => {
 	db.get("SELECT user_id FROM users WHERE user_mail = ?", [email], async function (err, user) {
 		if (user == null) {
 			var pass = await argon2.hash(rawpass);
-			db.run("INSERT INTO users (user_name, user_pass, user_mail, user_signin_ip, user_last_ip) VALUES (?, ?, ?, ?, ?)", [username, password, email, req.ip, req.ip]);
+			db.run("INSERT INTO users (user_name, user_pass, user_mail, user_signin_ip, user_last_ip) VALUES (?, ?, ?, ?, ?)", [username, pass, email, req.ip, req.ip]);
 			res.json({
 				"code": res.statusCode,
 				"message": req.statusMessage
