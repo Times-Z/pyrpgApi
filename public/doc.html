@@ -2,7 +2,236 @@
 <body>
     <%- include('include/nav'); -%>
     <div class="container-fluid vh-100">
-        <h1>Doc</h1>
+        <div class="row mt-4">
+            <div class="col-4">
+              <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-dark" id="list-post-list" data-toggle="list" href="#list-post" role="tab" aria-controls="post">POST</a>
+                <a class="list-group-item list-group-item-dark" id="list-get-list" data-toggle="list" href="#list-get" role="tab" aria-controls="get">GET</a>
+              </div>
+            </div>
+            <div class="col-8">
+              <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="list-post" role="tabpanel" aria-labelledby="list-post-list">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <h2>/ping</h2>
+                            <span>No param</span><br>
+                            <span>Return type :</span><br>
+                            <code>
+                                {
+                                    "code": 200,
+                                    "message": null
+                                  }
+                            </code>
+                        </li>
+                        <li class="list-group-item">
+                            <h2>/signup</h2>
+                            <span>Params: <br>
+                                   - username (string) <br>
+                                   - email (string) <br>
+                                   - password (string)
+                            </span><br>
+                            <span>Return type :</span><br>
+                            <span>On error :</span><br>
+                            <code>
+                                {
+                                    "code": 422,
+                                    "message": "Missing argument"
+                                  }
+                            </code><br>
+                            <span>On success :</span><br>
+                            <code>
+                                {
+                                    "code": 200,
+                                    "message": null
+                                  }
+                            </code>
+                        </li>
+                        <li class="list-group-item">
+                            <h2>/login</h2>
+                            <span>Params: <br>
+                                   - email (string) <br>
+                                   - password (string)
+                            </span><br>
+                            <span>Return type :</span><br>
+                            <span>On error :</span><br>
+                            <code>
+                                {
+                                    "code": 401,
+                                    "message": "Incorect password"
+                                  }
+                            </code><br>
+                            <span>On success :</span><br>
+                            <code>
+                                {
+                                    "code": 200,
+                                    "message": null,
+                                    "data": "JWT"
+                                  }
+                            </code>
+                        </li>
+                        <li class="list-group-item">
+                            <h2>/getSave</h2>
+                            <span>No param</span><br>
+                            <span>Require : Authorization header with Bearer + JWT</span><br>
+                            <span>Return type :</span><br>
+                            <span>On error :</span><br>
+                            <code>
+                                {
+                                    "code": 403,
+                                    "message": "Token error"
+                                  }
+                            </code><br>
+                            <span>On success :</span><br>
+                            <code>
+                                {
+                                    "code": 200,
+                                    "message": null,
+                                    "save": {
+                                      "save_id": 29,
+                                      "user_id": 1,
+                                      "save_json": "{\"charName\": \"admin\", \"charClassId\": 4, \"charClass\": {\"name\": \"Admin\", \"hp\": 2000000, \"atk\": 100000, \"def\": 200, \"acr\": 100, \"spe\": {\"name\": \"God mod\", \"target\": \"self\", \"effect\": {\"focus\": \"hp\", \"alterate\": \"+\", \"value\": \"99999999999999999999\"}}}, \"charLevel\": 2, \"charExp\": 85, \"score\": 0}",
+                                      "save_date": "2020-06-05 19:22:16"
+                                    }
+                                  }
+                            </code>
+                        </li>
+                        <li class="list-group-item">
+                            <h2>/delSave</h2>
+                            <span>No param</span><br>
+                            <span>Require : Authorization header with Bearer + JWT</span><br>
+                            <span>Return type :</span><br>
+                            <span>On error :</span><br>
+                            <code>
+                                {
+                                    "code": 403,
+                                    "message": "Token error"
+                                  }
+                            </code><br>
+                            <span>On success :</span><br>
+                            <code>
+                                {
+                                    "code": 200,
+                                    "message": null
+                                  }
+                            </code>
+                        </li>
+                      </ul>
+                        <li class="list-group-item">
+                            <h2>/save</h2>
+                            <span>Param : save (json)</span><br>
+                            <span>Require : Authorization header with Bearer + JWT</span><br>
+                            <span>Return type :</span><br>
+                            <span>On error :</span><br>
+                            <code>
+                                {
+                                    "code": 422,
+                                    "message": "Missing argument"
+                                  }
+                            </code><br>
+                            <span>On success :</span><br>
+                            <code>
+                                {
+                                    "code": 200,
+                                    "message": null
+                                  }
+                            </code>
+                        </li>
+                      </ul>
+                </div>
+                <div class="tab-pane fade" id="list-get" role="tabpanel" aria-labelledby="list-get-list">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <h2>/classes</h2>
+                                    <span>Return type :</span><br>
+                                    <span>On error :</span><br>
+                                    <code>
+                                        {
+                                            "code": 500,
+                                            "message": "Server error"
+                                          }
+                                    </code><br>
+                                    <span>On success :</span><br>
+                                    <code>
+                                        {
+                                            "code": 200,
+                                            "message": null,
+                                            "classes": [
+                                              {
+                                                "class_id": 0,
+                                                "class_json": "{\"name\":\"Rogue\",\"hp\":80,\"atk\":8,\"def\":50,\"acr\":90,\"spe\":{\"name\":\"You'r here ?\",\"target\":\"monster\",\"effect\":{\"focus\":\"acr\",\"alterate\":\"-\",\"value\":\"70\"}}}"
+                                              }
+                                            ]
+                                          }
+                                    </code>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="list-group-item">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <h2>/levels</h2>
+                                    <span>Return type :</span><br>
+                                    <span>On error :</span><br>
+                                    <code>
+                                        {
+                                            "code": 500,
+                                            "message": "Server error"
+                                          }
+                                    </code><br>
+                                    <span>On success :</span><br>
+                                    <code>
+                                        {
+                                            "code": 200,
+                                            "message": null,
+                                            "levels": [
+                                              {
+                                                "levels": 1,
+                                                "toUp": 50,
+                                                "hp": 0,
+                                                "atk": 0
+                                              }
+                                            ]
+                                        }
+                                    </code>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="list-group-item">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <h2>/levels</h2>
+                                    <span>Return type :</span><br>
+                                    <span>On error :</span><br>
+                                    <code>
+                                        {
+                                            "code": 500,
+                                            "message": "Server error"
+                                          }
+                                    </code><br>
+                                    <span>On success :</span><br>
+                                    <code>
+                                        {
+                                            "code": 200,
+                                            "message": null,
+                                            "monsters": [
+                                              {
+                                                "monster_id": 1,
+                                                "monster_json": "{\"id\":1,\"name\":\"Phaxe\",\"minHp\":80,\"maxHp\":140,\"minAtk\":5,\"maxAtk\":17,\"minAcr\":70,\"maxAcr\":100,\"def\":70,\"spell\":{\"name\":\"Great Spirit\",\"target\":\"self\",\"effect\":{\"focus\":\"hp\",\"alterate\":\"+\",\"minRange\":4,\"maxRange\":10}},\"expMin\":40,\"expMax\":70}"
+                                              }
+                                            ]
+                                        }
+                                    </code>
+                                </li>
+                            </ul>
+                        </li>
+                      </ul>
+                </div>
+              </div>
+            </div>
+          </div>
     </div>
 </body>
 <%- include('include/footer'); -%> 
